@@ -136,7 +136,11 @@ function RouteComponent() {
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <a href="#" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://github.com/jhsebas741/react-starter-kit"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <svg
                       role="img"
                       viewBox="0 0 24 24"
@@ -295,7 +299,7 @@ function RouteComponent() {
               <ul className="space-y-2 text-sm">
                 <li>
                   <a
-                    href="#"
+                    href="https://github.com/jhsebas741/react-starter-kit"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-foreground transition-colors"
