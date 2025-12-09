@@ -20,48 +20,46 @@ const setStoredUser = (user: User | null): void => {
   }
 }
 
-export const userQuery = () =>
-  queryOptions({
-    queryKey: ['user'],
-    queryFn: async (): Promise<User | null> => {
-      return getStoredUser()
-    },
-    initialData: null,
-    retry: false,
-  })
-
-export const loginMutation = () =>
-  mutationOptions({
-    mutationKey: ['login'],
-    mutationFn: async (credentials: LoginCredentials) => {
-      const user: User = {
-        id: 1,
-        name: credentials.email.split('@')[0],
-        email: credentials.email,
-      }
-      setStoredUser(user)
-      return user
-    },
-  })
-
-export const registerMutation = () =>
-  mutationOptions({
-    mutationKey: ['register'],
-    mutationFn: async (credentials: RegisterCredentials) => {
-      const user: User = {
-        id: 1,
-        name: credentials.name,
-        email: credentials.email,
-      }
-      setStoredUser(user)
-      return user
-    },
-  })
-
-export const logoutMutation = () =>
-  mutationOptions({
-    mutationKey: ['logout'],
-    mutationFn: async (): Promise<void> => {
-      setStoredUser(null)
-    },
-  })
+export const authQueries = {
+  me: () =>
+    queryOptions({
+      queryKey: ['user'],
+      queryFn: async (): Promise<User | null> => {
+        return getStoredUser()
+      },
+      retry: false,
+    }),
+  login: () =>
+    mutationOptions({
+      mutationKey: ['login'],
+      mutationFn: async (credentials: LoginCredentials) => {
+        const user: User = {
+          id: 1,
+          name: credentials.email.split('@')[0],
+          email: credentials.email,
+        }
+        setStoredUser(user)
+        return user
+      },
+    }),
+  register: () =>
+    mutationOptions({
+      mutationKey: ['register'],
+      mutationFn: async (credentials: RegisterCredentials) => {
+        const user: User = {
+          id: 1,
+          name: credentials.name,
+          email: credentials.email,
+        }
+        setStoredUser(user)
+        return user
+      },
+    }),
+  logout: () =>
+    mutationOptions({
+      mutationKey: ['logout'],
+      mutationFn: async (): Promise<void> => {
+        setStoredUser(null)
+      },
+    }),
+} as const

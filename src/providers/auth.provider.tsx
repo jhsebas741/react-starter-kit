@@ -1,36 +1,31 @@
 import { AuthContext } from '@/hooks/use-auth'
-import {
-  loginMutation,
-  logoutMutation,
-  registerMutation,
-  userQuery,
-} from '@/queries/auth.queries'
+import { authQueries } from '@/queries/auth.queries'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { useCallback } from 'react'
-import type { LoginCredentials, RegisterData } from '../hooks/use-auth'
+import type { LoginCredentials, RegisterCredentials } from '../hooks/use-auth'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient()
 
-  const { data: user, isLoading, isError, error } = useQuery(userQuery())
+  const { data: user, isLoading, isError, error } = useQuery(authQueries.me())
 
   const { mutateAsync: mutateLogin } = useMutation({
-    ...loginMutation(),
+    ...authQueries.login(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] })
     },
   })
 
   const { mutateAsync: mutateRegister } = useMutation({
-    ...registerMutation(),
+    ...authQueries.register(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] })
     },
   })
 
   const { mutateAsync: mutateLogout } = useMutation({
-    ...logoutMutation(),
+    ...authQueries.logout(),
     onSuccess: () => {
       queryClient.setQueryData(['user'], null)
       queryClient.clear()
@@ -51,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [mutateLogout])
 
   const register = useCallback(
-    async (data: RegisterData) => {
+    async (data: RegisterCredentials) => {
       await mutateRegister(data)
     },
     [mutateRegister],

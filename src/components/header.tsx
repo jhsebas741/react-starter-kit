@@ -4,7 +4,7 @@ import { ModeToggle } from './mode-toggle'
 import { Separator } from './ui/separator'
 import { SidebarTrigger } from './ui/sidebar'
 
-export default function Header({
+export function Header({
   breadcrumbs,
 }: {
   breadcrumbs: BreadcrumbItem[]

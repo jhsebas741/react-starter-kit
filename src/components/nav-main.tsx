@@ -67,7 +67,9 @@ export function NavMain({ items }: { items: (NavGroup | NavItem)[] }) {
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  isActive={Boolean(match({ to: item.linkOptions.to }))}
+                  isActive={Boolean(
+                    match({ to: item.linkOptions.to, fuzzy: true }),
+                  )}
                   asChild
                 >
                   <Link {...item.linkOptions}>

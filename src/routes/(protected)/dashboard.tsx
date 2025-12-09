@@ -1,4 +1,4 @@
-import Header from '@/components/header'
+import { Header } from '@/components/header'
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern'
 import type { BreadcrumbItem } from '@/types/nav'
 import { createFileRoute } from '@tanstack/react-router'

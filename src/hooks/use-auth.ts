@@ -1,14 +1,14 @@
-import type { LoginCredentials, RegisterData, User } from '@/types/auth'
+import type { LoginCredentials, RegisterCredentials, User } from '@/types/auth'
 import { createContext, useContext } from 'react'
 
-export type { LoginCredentials, RegisterData, User }
+export type { LoginCredentials, RegisterCredentials, User }
 
 export interface AuthContext {
   isAuthenticated: boolean
   isLoading: boolean
   login: (credentials: LoginCredentials) => Promise<void>
   logout: () => Promise<void>
-  register: (credentials: RegisterData) => Promise<void>
+  register: (credentials: RegisterCredentials) => Promise<void>
   user: User | null
   error: Error | null
 }
