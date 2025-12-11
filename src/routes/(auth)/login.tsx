@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useAuth } from '@/hooks/use-auth'
-import { useForm } from '@tanstack/react-form'
+import { revalidateLogic, useForm } from '@tanstack/react-form'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { PasswordInput } from './-components/password-input'
 import { loginFormSchema } from './-schemas/login-form.schema'
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/(auth)/login')({
 })
 
 function RouteComponent() {
-  const { login, isLoading } = useAuth()
+  const { login } = useAuth()
 
   const form = useForm({
     defaultValues: {
@@ -28,8 +28,9 @@ function RouteComponent() {
       password: '',
       remember: false,
     },
+    validationLogic: revalidateLogic(),
     validators: {
-      onSubmit: loginFormSchema,
+      onDynamic: loginFormSchema,
     },
     onSubmit: ({ value }) => login(value),
   })
@@ -117,10 +118,20 @@ function RouteComponent() {
           }}
         </form.Field>
         <Field>
-          <Button type="submit" tabIndex={4} disabled={isLoading}>
-            {isLoading && <Spinner />}
-            Login
-          </Button>
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <Button
+                type="submit"
+                tabIndex={4}
+                disabled={!canSubmit || isSubmitting}
+              >
+                {isSubmitting && <Spinner />}
+                Login
+              </Button>
+            )}
+          </form.Subscribe>
           <FieldDescription className="text-center">
             Don&apos;t have an account?{' '}
             <Link

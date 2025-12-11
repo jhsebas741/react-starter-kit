@@ -1,3 +1,4 @@
+import { sleep } from '@/lib/utils'
 import type { LoginCredentials, RegisterCredentials, User } from '@/types/auth'
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
 
@@ -39,6 +40,7 @@ export const authQueries = {
           email: credentials.email,
         }
         setStoredUser(user)
+        await sleep(1000)
         return user
       },
     }),
@@ -52,6 +54,7 @@ export const authQueries = {
           email: credentials.email,
         }
         setStoredUser(user)
+        await sleep(1000)
         return user
       },
     }),
