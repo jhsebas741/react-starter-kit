@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   Field,
@@ -7,12 +6,10 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import { Spinner } from '@/components/ui/spinner'
+import { useAppForm } from '@/hooks/use-app-form'
 import { useAuth } from '@/hooks/use-auth'
-import { revalidateLogic, useForm } from '@tanstack/react-form'
+import { revalidateLogic } from '@tanstack/react-form'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { PasswordInput } from './-components/password-input'
 import { loginFormSchema } from './-schemas/login-form.schema'
 
 export const Route = createFileRoute('/(auth)/login')({
@@ -22,7 +19,7 @@ export const Route = createFileRoute('/(auth)/login')({
 function RouteComponent() {
   const { login } = useAuth()
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       email: '',
       password: '',
@@ -50,52 +47,26 @@ function RouteComponent() {
             Enter your email below to login to your account
           </p>
         </div>
-        <form.Field name="email">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  aria-invalid={isInvalid}
-                  type="email"
-                  placeholder="email@example.com"
-                  tabIndex={1}
-                  autoFocus
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-        <form.Field name="password">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                <PasswordInput
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  aria-invalid={isInvalid}
-                  placeholder="Password"
-                  tabIndex={2}
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
+        <form.AppField name="email">
+          {(field) => (
+            <field.TextField
+              label="Email"
+              type="email"
+              placeholder="email@example.com"
+              tabIndex={1}
+              autoFocus
+            />
+          )}
+        </form.AppField>
+        <form.AppField name="password">
+          {(field) => (
+            <field.PasswordField
+              label="Password"
+              placeholder="password"
+              tabIndex={2}
+            />
+          )}
+        </form.AppField>
         <form.Field name="remember">
           {(field) => {
             const isInvalid =
@@ -118,20 +89,9 @@ function RouteComponent() {
           }}
         </form.Field>
         <Field>
-          <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isSubmitting]}
-          >
-            {([canSubmit, isSubmitting]) => (
-              <Button
-                type="submit"
-                tabIndex={4}
-                disabled={!canSubmit || isSubmitting}
-              >
-                {isSubmitting && <Spinner />}
-                Login
-              </Button>
-            )}
-          </form.Subscribe>
+          <form.AppForm>
+            <form.SubmitButton label="Login" tabIndex={4} />
+          </form.AppForm>
           <FieldDescription className="text-center">
             Don&apos;t have an account?{' '}
             <Link

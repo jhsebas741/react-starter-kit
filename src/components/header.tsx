@@ -1,10 +1,11 @@
 import type { BreadcrumbItem } from '@/types/nav'
+import { memo } from 'react'
 import { Breadcrumbs } from './breadcrumbs'
 import { ModeToggle } from './mode-toggle'
 import { Separator } from './ui/separator'
 import { SidebarTrigger } from './ui/sidebar'
 
-export function Header({
+export const Header = memo(function Header({
   breadcrumbs,
 }: {
   breadcrumbs: BreadcrumbItem[]
@@ -21,4 +22,4 @@ export function Header({
       </div>
     </header>
   )
-}
+})

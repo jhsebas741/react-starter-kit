@@ -7,12 +7,13 @@ export const Route = createFileRoute('/(protected)/dashboard')({
   component: RouteComponent,
 })
 
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Dashboard',
+  },
+]
+
 function RouteComponent() {
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      title: 'Dashboard',
-    },
-  ]
   return (
     <>
       <Header breadcrumbs={breadcrumbs} />

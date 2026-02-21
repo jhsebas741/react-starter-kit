@@ -1,4 +1,5 @@
 import { ChevronRight } from 'lucide-react'
+import { memo } from 'react'
 
 import {
   Collapsible,
@@ -16,10 +17,29 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
 import type { NavGroup, NavItem } from '@/types/nav'
-import { Link, useMatchRoute } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 
-export function NavMain({ items }: { items: (NavGroup | NavItem)[] }) {
-  const match = useMatchRoute()
+interface NavMainProps {
+  items: (NavGroup | NavItem)[]
+  activeRoutes: Set<string>
+}
+
+function arePropsEqual(prevProps: NavMainProps, nextProps: NavMainProps) {
+  if (prevProps.items !== nextProps.items) return false
+
+  if (prevProps.activeRoutes.size !== nextProps.activeRoutes.size) return false
+
+  for (const route of prevProps.activeRoutes) {
+    if (!nextProps.activeRoutes.has(route)) return false
+  }
+
+  return true
+}
+
+export const NavMain = memo(function NavMain({
+  items,
+  activeRoutes,
+}: NavMainProps) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -46,8 +66,8 @@ export function NavMain({ items }: { items: (NavGroup | NavItem)[] }) {
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton
-                            isActive={Boolean(
-                              match({ to: subItem.linkOptions.to }),
+                            isActive={activeRoutes.has(
+                              subItem.linkOptions.to ?? '',
                             )}
                             asChild
                           >
@@ -67,9 +87,7 @@ export function NavMain({ items }: { items: (NavGroup | NavItem)[] }) {
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  isActive={Boolean(
-                    match({ to: item.linkOptions.to, fuzzy: true }),
-                  )}
+                  isActive={activeRoutes.has(item.linkOptions.to ?? '')}
                   asChild
                 >
                   <Link {...item.linkOptions}>
@@ -84,4 +102,4 @@ export function NavMain({ items }: { items: (NavGroup | NavItem)[] }) {
       </SidebarMenu>
     </SidebarGroup>
   )
-}
+}, arePropsEqual)

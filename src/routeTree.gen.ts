@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as protectedRouteRouteImport } from './routes/(protected)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as protectedInfoRouteImport } from './routes/(protected)/info'
 import { Route as protectedDashboardRouteImport } from './routes/(protected)/dashboard'
+import { Route as protectedAboutRouteImport } from './routes/(protected)/about'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 
@@ -29,9 +31,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const protectedInfoRoute = protectedInfoRouteImport.update({
+  id: '/info',
+  path: '/info',
+  getParentRoute: () => protectedRouteRoute,
+} as any)
 const protectedDashboardRoute = protectedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => protectedRouteRoute,
+} as any)
+const protectedAboutRoute = protectedAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => protectedRouteRoute,
 } as any)
 const authRegisterRoute = authRegisterRouteImport.update({
@@ -49,13 +61,17 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/about': typeof protectedAboutRoute
   '/dashboard': typeof protectedDashboardRoute
+  '/info': typeof protectedInfoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/about': typeof protectedAboutRoute
   '/dashboard': typeof protectedDashboardRoute
+  '/info': typeof protectedInfoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -64,13 +80,15 @@ export interface FileRoutesById {
   '/(protected)': typeof protectedRouteRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
+  '/(protected)/about': typeof protectedAboutRoute
   '/(protected)/dashboard': typeof protectedDashboardRoute
+  '/(protected)/info': typeof protectedInfoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register' | '/dashboard'
+  fullPaths: '/' | '/login' | '/register' | '/about' | '/dashboard' | '/info'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/dashboard'
+  to: '/' | '/login' | '/register' | '/about' | '/dashboard' | '/info'
   id:
     | '__root__'
     | '/'
@@ -78,7 +96,9 @@ export interface FileRouteTypes {
     | '/(protected)'
     | '/(auth)/login'
     | '/(auth)/register'
+    | '/(protected)/about'
     | '/(protected)/dashboard'
+    | '/(protected)/info'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -110,11 +130,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(protected)/info': {
+      id: '/(protected)/info'
+      path: '/info'
+      fullPath: '/info'
+      preLoaderRoute: typeof protectedInfoRouteImport
+      parentRoute: typeof protectedRouteRoute
+    }
     '/(protected)/dashboard': {
       id: '/(protected)/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof protectedDashboardRouteImport
+      parentRoute: typeof protectedRouteRoute
+    }
+    '/(protected)/about': {
+      id: '/(protected)/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof protectedAboutRouteImport
       parentRoute: typeof protectedRouteRoute
     }
     '/(auth)/register': {
@@ -149,11 +183,15 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 )
 
 interface protectedRouteRouteChildren {
+  protectedAboutRoute: typeof protectedAboutRoute
   protectedDashboardRoute: typeof protectedDashboardRoute
+  protectedInfoRoute: typeof protectedInfoRoute
 }
 
 const protectedRouteRouteChildren: protectedRouteRouteChildren = {
+  protectedAboutRoute: protectedAboutRoute,
   protectedDashboardRoute: protectedDashboardRoute,
+  protectedInfoRoute: protectedInfoRoute,
 }
 
 const protectedRouteRouteWithChildren = protectedRouteRoute._addFileChildren(

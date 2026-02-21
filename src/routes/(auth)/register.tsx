@@ -2,17 +2,14 @@ import { Button } from '@/components/ui/button'
 import {
   Field,
   FieldDescription,
-  FieldError,
   FieldGroup,
-  FieldLabel,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useAuth } from '@/hooks/use-auth'
-import { revalidateLogic, useForm } from '@tanstack/react-form'
+import { revalidateLogic } from '@tanstack/react-form'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { PasswordInput } from './-components/password-input'
 import { registerFormSchema } from './-schemas/register-form.schema'
+import { useAppForm } from '@/hooks/use-app-form'
 
 export const Route = createFileRoute('/(auth)/register')({
   component: RouteComponent,
@@ -20,7 +17,7 @@ export const Route = createFileRoute('/(auth)/register')({
 
 function RouteComponent() {
   const { register } = useAuth()
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       name: '',
       email: '',
@@ -49,108 +46,37 @@ function RouteComponent() {
             Enter your details below to create your account
           </p>
         </div>
-        <form.Field name="name">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Name</FieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  aria-invalid={isInvalid}
-                  type="text"
-                  placeholder="Full name"
-                  tabIndex={1}
-                  autoFocus
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-        <form.Field name="email">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  aria-invalid={isInvalid}
-                  type="email"
-                  placeholder="email@example.com"
-                  tabIndex={2}
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-        <form.Field name="password">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                <PasswordInput
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  aria-invalid={isInvalid}
-                  placeholder="Password"
-                  tabIndex={3}
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-        <form.Field name="passwordConfirmation">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Confirm Password</FieldLabel>
-                <PasswordInput
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  aria-invalid={isInvalid}
-                  placeholder="Confirm Password"
-                  tabIndex={4}
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
+        <form.AppField name="name">
+          {(field) => (
+            <field.TextField label="Name" placeholder="Full Name" autoFocus />
+          )}
+        </form.AppField>
+        <form.AppField name="email">
+          {(field) => (
+            <field.TextField
+              label="Email"
+              type="email"
+              placeholder="email@example.com"
+            />
+          )}
+        </form.AppField>
+        <form.AppField name="password">
+          {(field) => (
+            <field.PasswordField label="Password" placeholder="password" />
+          )}
+        </form.AppField>
+        <form.AppField name="passwordConfirmation">
+          {(field) => (
+            <field.PasswordField label="Password" placeholder="password" />
+          )}
+        </form.AppField>
 
         <Field>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
             {([canSubmit, isSubmitting]) => (
-              <Button
-                type="submit"
-                tabIndex={5}
-                disabled={!canSubmit || isSubmitting}
-              >
+              <Button type="submit" disabled={!canSubmit || isSubmitting}>
                 {isSubmitting && <Spinner />}
                 Register
               </Button>
@@ -158,11 +84,7 @@ function RouteComponent() {
           </form.Subscribe>
           <FieldDescription className="text-center">
             Already have an account?{' '}
-            <Link
-              to="/login"
-              className="underline underline-offset-4"
-              tabIndex={6}
-            >
+            <Link to="/login" className="underline underline-offset-4">
               Login
             </Link>
           </FieldDescription>
