@@ -14,7 +14,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { useAuth } from '@/hooks/use-auth'
-import { type User } from '@/types/auth'
+import type { User } from '@/types/auth'
 import type { NavGroup, NavItem } from '@/types/nav'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { memo, useMemo } from 'react'

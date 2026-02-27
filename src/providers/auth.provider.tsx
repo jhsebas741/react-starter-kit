@@ -1,9 +1,9 @@
 import { AuthContext } from '@/hooks/use-auth'
 import { authQueries } from '@/queries/auth.queries'
+import type { LoginCredentials, RegisterCredentials } from '@/types/auth'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { useCallback } from 'react'
-import type { LoginCredentials, RegisterCredentials } from '../hooks/use-auth'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient()

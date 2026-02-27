@@ -1,8 +1,6 @@
 import type { LoginCredentials, RegisterCredentials, User } from '@/types/auth'
 import { createContext, useContext } from 'react'
 
-export type { LoginCredentials, RegisterCredentials, User }
-
 export interface AuthContext {
   isAuthenticated: boolean
   isLoading: boolean

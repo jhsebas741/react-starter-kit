@@ -283,6 +283,16 @@ function RouteComponent() {
                 </li>
                 <li>
                   <a
+                    href="https://tanstack.com/form"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    TanStack Form
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="https://ui.shadcn.com"
                     target="_blank"
                     rel="noopener noreferrer"
